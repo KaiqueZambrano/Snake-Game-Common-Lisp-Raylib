@@ -84,28 +84,21 @@
                                             :width 15 
                                             :height 15)))
         (when (cl-raylib:check-collision-recs rec1 rec2)
-          (cl-raylib:close-window)
           (sb-ext:quit :unix-status 0))))))
 
-(defun createWindow ()
-  (cl-raylib:init-window 800 600 "Snake Game")
-  (cl-raylib:set-target-fps 15))
-
-(defun main () 
-  (createWindow)
-  (loop
-    until (cl-raylib:window-should-close)
-    do
-      (input)
-      (mover-cobra)
-      (colisao-comida)
-      (colisao-corpo)
-      (cl-raylib:begin-drawing)
-      (cl-raylib:clear-background :raywhite)
-      (draw-comida)
-      (draw-cobra)
-      (cl-raylib:end-drawing))
-  
-  (cl-raylib:close-window))
+(defun main ()
+  (cl-raylib:with-window (800 600 "SNAKE GAME")
+    (cl-raylib:set-target-fps 20)
+    (loop
+      until (cl-raylib:window-should-close)
+        do (cl-raylib:with-drawing
+            (input)
+            (mover-cobra)
+            (colisao-comida)
+            (colisao-corpo)
+            (cl-raylib:begin-drawing)
+            (cl-raylib:clear-background :raywhite)
+            (draw-comida)
+            (draw-cobra)))))
 
 (main)
